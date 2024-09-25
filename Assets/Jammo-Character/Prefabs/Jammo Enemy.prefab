@@ -7491,9 +7491,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bfec66d24718b34bbc87a956f811161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableMovement: 0
   strafeSpeed: 3
   MaxHitPoints: 5
+  AttackRadius: 1.5
+  damageAmmount: 0
   InformAttackFX: {fileID: 1459169868779619100}
+  hitSFX: {fileID: 8300000, guid: 43cd0c1b3653ab541b56cdeb750c72d4, type: 3}
 --- !u!1 &4410170402653868067
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-
 namespace UI
 {
 	public class EnemyFocusUI : MonoBehaviour
 	{
-		[SerializeField] Image enemyFocus;
+		[SerializeField] Transform enemyFocus;
 		Camera cam;
 		Transform focus;
 		private Vector3 offset;

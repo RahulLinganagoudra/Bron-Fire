@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4025753867870246575}
   - component: {fileID: 1219858360721080336}
   - component: {fileID: 1029002675686872562}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillers
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -6832,6 +6832,7 @@ GameObject:
   - component: {fileID: 485631433315257372}
   - component: {fileID: 5213313593121154144}
   - component: {fileID: 8874474106144897208}
+  - component: {fileID: 275412947575378418}
   m_Layer: 0
   m_Name: Jammo_Player
   m_TagString: Player
@@ -6947,8 +6948,6 @@ MonoBehaviour:
   _staminaRetentionTime: 5
   _lowStaminaThreshold: 5
   broFireLifetime: 5
-  broFireFXPrefab: {fileID: 198663536934198432, guid: bb98861c48ad2024ca93498c7dd93a6c,
-    type: 3}
 --- !u!114 &4757836856755875625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6984,8 +6983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: caa9f165e2b4f1a4f9522501717c095d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Velocity: 10
-  TiredVelocity: 5
+  Velocity: 8
+  TiredVelocity: 4
   InputX: 0
   InputZ: 0
   desiredMoveDirection: {x: 0, y: 0, z: 0}
@@ -6995,7 +6994,7 @@ MonoBehaviour:
   Speed: 0
   allowPlayerRotation: 0.1
   cam: {fileID: 0}
-  controller: {fileID: 0}
+  controller: {fileID: 4757836856755875627}
   health: {fileID: 3239497717338308057}
   isGrounded: 0
   FootstepAudioClips: []
@@ -7025,7 +7024,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3541754002163558908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31d01b7e3eaafd949bde33cf870780f4, type: 3}
   m_Name: 
@@ -7163,6 +7162,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &275412947575378418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3541754002163558908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082eedbc662d12e42ba5666d23644768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assassinsFocusUI: {fileID: 0}
 --- !u!1 &3921334144448749991
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using Utilities;
 /*
@@ -24,10 +23,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
 	private float deltaTime => 1 / updatesPerSecond;
 	private float timePassed = 0;
+	public bool stopUpdate;
 
 	private void Start()
 	{
-		DOTween.Init(useSafeMode: false);
+		DOTween.Init();
 		print($"Deltatime = {deltaTime}");
 	}
 	private void Update()
@@ -38,7 +38,7 @@ public class EnemyManager : Singleton<EnemyManager>
 			DOTween.Clear(true);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
-		if (activeEnemies.Count == 0) return;
+		if (activeEnemies.Count == 0||stopUpdate) return;
 		//Enemy Update Loop
 		if (timePassed >= deltaTime)
 		{
@@ -82,6 +82,10 @@ public class EnemyManager : Singleton<EnemyManager>
 	}
 	public void Unsubscribe(EnemyAI enemy)
 	{
+		if(enemy==attackingEnemy)
+		{
+			attackingEnemy=null;
+		}
 		activeEnemies.Remove(enemy);
 		OnEnemyDead?.Invoke(enemy);
 	}

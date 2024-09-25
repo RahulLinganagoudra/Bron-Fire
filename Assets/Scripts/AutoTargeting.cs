@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UI;
 using UnityEngine;
 using Utilities;
 
@@ -20,15 +19,19 @@ using Utilities;
 public class AutoTargeting : MonoBehaviour
 {
 
+
+	private const float HardLockInputDelay = .5f;
 	[SerializeField] protected virtual List<EnemyAI> enemiesAlive => EnemyManager.instance.activeEnemies;
 	[SerializeField] private float autoFocusRadius = 10;
-	protected Vector3 inputDirection;
 
+	protected Vector3 inputDirection;
 	protected Vector2 movementAxis;
 	protected Camera cam;
 	protected EnemyAI explicitTarget;
 	protected EnemyAI currentTarget;
 	protected EnemyAI previousTarget;
+	private float lastTimeHardTargetChecked;
+
 
 	public Action<EnemyAI> OnTargetChanged;
 	protected virtual void Start()
@@ -51,23 +54,42 @@ public class AutoTargeting : MonoBehaviour
 				explicitTarget = null;
 			}
 		};
-
 	}
 	protected virtual void Update()
 	{
-		if (Input.GetMouseButton(2))
+		//when player locks again the same hardlocked enemy, hardLock cancels
+		if (Input.GetMouseButtonDown(2))
 		{
-			explicitTarget = GetTheEnemyInCameraDirection();
-			if (currentTarget != explicitTarget && explicitTarget != previousTarget)
+			EnemyAI newHardTarget = GetTheEnemyInCameraDirection();
+			if (explicitTarget == newHardTarget)
 			{
-				previousTarget = currentTarget;
-				currentTarget = explicitTarget;
-				OnTargetChanged?.Invoke(currentTarget);
+				explicitTarget = null;
 			}
+			else
+			{
+				explicitTarget = newHardTarget;
+			}
+
+			ChangeTarget(explicitTarget);
+			lastTimeHardTargetChecked = Time.time;
 		}
+		//allows to choose the right target by holding the mouse middle button
+		//delay is added to prevent doing this task every frame which is not ideal for performance
+		else if (Input.GetMouseButton(2) && Time.time - lastTimeHardTargetChecked > HardLockInputDelay)
+		{
+			EnemyAI newHardTarget = GetTheEnemyInCameraDirection();
+			explicitTarget = newHardTarget;
+
+			ChangeTarget(explicitTarget);
+			lastTimeHardTargetChecked = Time.time;
+		}
+
+
 		if (enemiesAlive.Count == 0 || explicitTarget != null) return;
-		movementAxis.x = Input.GetAxis("Horizontal");
-		movementAxis.y = Input.GetAxis("Vertical");
+		
+		
+		movementAxis.x = Input.GetAxisRaw("Horizontal");
+		movementAxis.y = Input.GetAxisRaw("Vertical");
 		Vector3 forward = cam.transform.forward;
 		Vector3 right = cam.transform.right;
 		forward.y = 0f;
@@ -93,13 +115,20 @@ public class AutoTargeting : MonoBehaviour
 		}
 		inputDirection = inputDirection.normalized;
 		var newTarget = GetTheEnemyInDirection(inputDirection);
-		if (newTarget != previousTarget)
+		ChangeTarget(newTarget);
+	}
+
+	private void ChangeTarget(EnemyAI newTarget)
+	{
+		//TODO: Fighureout why i was checking  previous target check
+		if (currentTarget != newTarget)//&& explicitTarget != previousTarget)
 		{
 			previousTarget = currentTarget;
 			currentTarget = newTarget;
 			OnTargetChanged?.Invoke(currentTarget);
 		}
 	}
+
 	public EnemyAI GetCurrentTarget()
 	{
 		return currentTarget;
@@ -142,7 +171,7 @@ public class AutoTargeting : MonoBehaviour
 		}
 		return enemiesAlive[closestIndex];
 	}
-	EnemyAI GetTheEnemyInCameraDirection()
+	public EnemyAI GetTheEnemyInCameraDirection()
 	{
 		if (enemiesAlive.Count == 0) return null;
 		int closestIndex = 0;
@@ -184,10 +213,26 @@ public class AutoTargeting : MonoBehaviour
 			{
 				continue;
 			}
-			if (enemy.IsAttacking) {
+			if (enemy.IsAttacking)
+			{
 				return enemy;
 			}
 		}
 		return null;
+	}
+	private void OnDrawGizmos()
+	{
+		if (currentTarget == null) return;
+		if (explicitTarget == null)
+		{
+			Gizmos.color = Color.blue;
+		}
+		else
+		{
+			Gizmos.color = Color.red;
+		}
+
+		Gizmos.DrawSphere(currentTarget.transform.position + Vector3.up * .8f, .5f);
+		Gizmos.DrawRay(transform.position + Vector3.up, inputDirection);
 	}
 }
