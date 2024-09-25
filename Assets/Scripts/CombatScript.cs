@@ -18,7 +18,7 @@ public class CombatScript : MonoBehaviour
 	private const string CombatStanceAnimationParam = "CombatStance";
 	private const string NormalPunchAnimationParam = "NormalPunch";
 	private const string TiredAnimationParam = "Tired";
-
+	private const string HitAnimatorTrigger = "Hit1";
 	[SerializeField] TrailRenderer rightHand, LefHand, Leg;
 	[SerializeField] ParticleSystem rightHandShock, leftHandShock, legShock;
 	[SerializeField] private int maxCombo = 2;
@@ -236,7 +236,7 @@ public class CombatScript : MonoBehaviour
 		if (currentTarget != null && transform.position.CompareDist(currentTarget.transform.position, AttackDistance))
 		{
 			audioSource.Play();
-			currentTarget.DealDamage();
+			currentTarget.DealDamage(new DamageInfo { origin=gameObject,damageAmmount=1});
 			health.GainStamina(StaminaGainPerHit);
 		}
 	}
@@ -289,5 +289,11 @@ public class CombatScript : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.DrawSphere(transform.position + Vector3.up * targetUiOffset, 0.1f);
+	}
+
+	internal void DealDamage(DamageInfo damageInfo)
+	{
+		animator.SetTrigger(HitAnimatorTrigger);
+	health.DealDamage(damageInfo);
 	}
 }

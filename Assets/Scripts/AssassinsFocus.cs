@@ -2,11 +2,11 @@
 using DG.Tweening;
 using System.Collections;
 using Utilities;
-using Unity.VisualScripting;
 
 public class AssassinsFocus : MonoBehaviour
 {
 	private const float StoppingDistance = 1f;
+	private const string AssassinateAnimatorParam = "Assassinate";
 	[SerializeField] AssasinsFocusUI assassinsFocusUI;
 	private AutoTargeting enemyDetection;
 	private CombatScript combatScript;
@@ -72,7 +72,7 @@ public class AssassinsFocus : MonoBehaviour
 			EnemyAI enemy = enemyDetection.GetTheEnemyInCameraDirection();
 			//if (focusedEnemies.Contains(enemy))
 			//{
-			//	//TODO: Remove marker
+			//	//TODO: Remove enemy from focused enemies when it is selected again
 			//	focusedEnemies.Dequeue();
 			//}
 			if (focusedEnemies.Count < 5 && !focusedEnemies.Contains(enemy))
@@ -106,8 +106,8 @@ public class AssassinsFocus : MonoBehaviour
 			Vector3 stoppingPoint = transform.position + (directionToEnemy + negetiveDirection).XZ();
 			transform.DOMove(stoppingPoint, 0.2f).onComplete += () =>
 			{
-				currentEnemy.DealDamage(int.MaxValue);
-				animator.SetTrigger("Assassinate");
+				currentEnemy.DealDamage(new DamageInfo { origin = gameObject, damageAmmount = int.MaxValue });
+				animator.SetTrigger(AssassinateAnimatorParam);
 			};
 			yield return new WaitForSeconds(1.4f);
 		}

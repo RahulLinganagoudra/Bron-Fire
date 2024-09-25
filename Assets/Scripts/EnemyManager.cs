@@ -17,6 +17,9 @@ public class EnemyManager : Singleton<EnemyManager>
 
 	[Header("Enemy Update Loop")]
 	[SerializeField]
+	[Tooltip("While other enemy is getting hit, Chance of sending backup enemy for his help")]
+	private int getBackupPercentage=15;
+	[SerializeField]
 	[Min(0.5f)]
 	float updatesPerSecond = 5;
 
@@ -38,7 +41,7 @@ public class EnemyManager : Singleton<EnemyManager>
 			DOTween.Clear(true);
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
-		if (activeEnemies.Count == 0||stopUpdate) return;
+		if (activeEnemies.Count == 0 || stopUpdate) return;
 		//Enemy Update Loop
 		if (timePassed >= deltaTime)
 		{
@@ -67,9 +70,17 @@ public class EnemyManager : Singleton<EnemyManager>
 			EnemyStates enemyState = Random.Range(0, 2) == 1 ? EnemyStates.Idle : EnemyStates.Strafing;
 			enemy.SetCurrentEnemyState(enemyState);
 		}
-		if (!foundAttackingEnemy)
+		if (!foundAttackingEnemy || MyUtils.Utilities.GetChance(getBackupPercentage))
 		{
-			activeEnemies[Random.Range(0, activeEnemies.Count)].SetCurrentEnemyState(EnemyStates.Attacking);
+			while (true)
+			{
+				EnemyAI enemyAI = activeEnemies[Random.Range(0, activeEnemies.Count)];
+				if (!enemyAI.IsAttacking && !enemyAI.IsOnLowHealth)
+				{
+					enemyAI.SetCurrentEnemyState(EnemyStates.Attacking);
+					break;
+				}
+			}
 		}
 	}
 	public void ForceUpdateEnemies()
@@ -82,9 +93,9 @@ public class EnemyManager : Singleton<EnemyManager>
 	}
 	public void Unsubscribe(EnemyAI enemy)
 	{
-		if(enemy==attackingEnemy)
+		if (enemy == attackingEnemy)
 		{
-			attackingEnemy=null;
+			attackingEnemy = null;
 		}
 		activeEnemies.Remove(enemy);
 		OnEnemyDead?.Invoke(enemy);
