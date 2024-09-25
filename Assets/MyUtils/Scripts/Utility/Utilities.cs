@@ -39,6 +39,10 @@ namespace MyUtils
 
         #endregion
 
+        public static bool IsPlayer(this Component component)
+        {
+            return component != null && component.CompareTag("Player");
+        }
 
     }
 }

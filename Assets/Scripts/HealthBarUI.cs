@@ -12,10 +12,14 @@ public class HealthBarUI : MonoBehaviour
 	[SerializeField] private Slider primaryStaminaSlider;
 	[SerializeField] private Slider secondaryStaminaSlider;
 	[SerializeField] private Image secondaryStaminaSliderFill;
+	
 	[SerializeField] private Color staminaRestoreColor;
 	[SerializeField] private Color staminaReducedColor;
 	[SerializeField] private Color healthRestoredColor;
 	[SerializeField] private Color healthDamageColor;
+	[Header("Ability (Bro's Fire)")]
+	[SerializeField] Image abilityFill;
+
 
 	private void Awake()
 	{
@@ -30,6 +34,10 @@ public class HealthBarUI : MonoBehaviour
 		UpdateStamina();
 		secondaryHealthSlider.value = health.GetHeathPercentage;
 	}
+	public void UpdateBrosAbility(float percentage01)
+	{
+		abilityFill.fillAmount=percentage01;
+	}
 	internal void UnSubscribe(PlayerHealthAndStamina health)
 	{
 		this.health.OnDead -= OnDead;
@@ -41,7 +49,7 @@ public class HealthBarUI : MonoBehaviour
 	void UpdateHealth(float value)
 	{
 		secondaryHealthSliderFill.color = healthDamageColor;
-		TakeDamage(primaryHealthSlider, secondaryHealthSlider, value);
+		TakeDamage(primaryHealthSlider, secondaryHealthSlider, health.GetHeathPercentage);
 	}
 	private void UpdateHealthRestored(float oldValue, float newValue)
 	{

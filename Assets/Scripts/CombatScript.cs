@@ -15,6 +15,10 @@ public class CombatScript : MonoBehaviour
 	private const int AttackDistance = 2;
 	private const float HalfSecond = 0.5f;
 	private const float NoStaminaCostTeliportDistance = 2f;
+	private const string CombatStanceAnimationParam = "CombatStance";
+	private const string NormalPunchAnimationParam = "NormalPunch";
+	private const string TiredAnimationParam = "Tired";
+
 	[SerializeField] TrailRenderer rightHand, LefHand, Leg;
 	[SerializeField] ParticleSystem rightHandShock, leftHandShock, legShock;
 	[SerializeField] private int maxCombo = 2;
@@ -27,27 +31,30 @@ public class CombatScript : MonoBehaviour
 	[SerializeField] private AudioClip[] punch3SFX;
 	[SerializeField] EnemyFocusUI enemyFocusUI;
 	[SerializeField] private float targetUiOffset;
+	[SerializeField] bool isTired = false;
+	[SerializeField] AOEAbility ability;
 	[Space]
 
 	//Events
+	public UnityEvent<EnemyAI> OnTrajectory;
+	public UnityEvent<EnemyAI> OnHit;
+	public UnityEvent<EnemyAI> OnCounterAttack;
+
 	private EnemyAI currentTarget;
 	private PlayerHealthAndStamina health;
 	private AutoTargeting enemyDetection;
 	private MovementInput movementInput;
 	private Animator animator;
 	private CinemachineImpulseSource impulseSource;
-	public UnityEvent<EnemyAI> OnTrajectory;
-	public UnityEvent<EnemyAI> OnHit;
-	public UnityEvent<EnemyAI> OnCounterAttack;
+	private AudioSource audioSource;
 	private int currentCombo;
 	private float lastTimeFireInputReceived;
 	private bool isInCombatStance = false;
-	public bool isTired = false;
 	private float aoeCharge;
-	public AOEAbility ability;
-	private AudioSource audioSource;
 	private bool isTeleporting;
 	private float teliportLerpTimeDelta;
+	private float lastTimeAOERecharged;
+
 
 	void Start()
 	{
@@ -58,6 +65,13 @@ public class CombatScript : MonoBehaviour
 		movementInput = GetComponent<MovementInput>();
 		impulseSource = GetComponentInChildren<CinemachineImpulseSource>();
 		enemyDetection.OnTargetChanged += OnTargetChanged;
+		EnemyManager.instance.OnEnemyDead += (x) =>
+		{
+			if (x == enemyDetection.GetCurrentTarget())
+			{
+				OnTargetChanged(null);
+			}
+		};
 		OnTargetChanged(null);
 	}
 	private void OnDisable()
@@ -66,9 +80,11 @@ public class CombatScript : MonoBehaviour
 	}
 	private void Update()
 	{
-		if (health.IsOnFullStamina && aoeCharge < ability.MaxCharge)
+		if (health.IsOnFullStamina && aoeCharge < ability.MaxCharge && Time.time - lastTimeAOERecharged >= 1)
 		{
-			aoeCharge += ability.ChargeRate * Time.deltaTime;
+			aoeCharge += ability.ChargeRate;
+			HealthBarUI.instance.UpdateBrosAbility(aoeCharge / ability.MaxCharge);
+			lastTimeAOERecharged = Time.time;
 		}
 		if (Input.GetKeyDown(KeyCode.Q) && aoeCharge >= ability.MaxCharge)
 		{
@@ -76,6 +92,7 @@ public class CombatScript : MonoBehaviour
 			ability.UseAbility(this);
 			aoeCharge = 0;
 		}
+
 		if (isInCombatStance && Input.GetKeyDown(KeyCode.Space))
 		{
 			EnemyAI attackingEnemy = enemyDetection.GetAttackingEnemy(queryRadius: 5);
@@ -84,16 +101,16 @@ public class CombatScript : MonoBehaviour
 		if (Input.GetMouseButtonDown(0) && Time.time - lastTimeFireInputReceived > HalfSecond)
 		{
 			currentTarget = enemyDetection.GetCurrentTarget();
-
 			Attack();
 			if (!isInCombatStance)
 			{
 				movementInput.CanDash = false;
 				isInCombatStance = true;
-				animator.SetBool("CombatStance", isInCombatStance);
+				animator.SetBool(CombatStanceAnimationParam, isInCombatStance);
 			}
 			CalculateCombo();
 			lastTimeFireInputReceived = Time.time;
+
 		}
 
 		if (Time.time - lastTimeFireInputReceived > AttackIdleThresholdTime || new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).magnitude > InputDeadZone)
@@ -102,7 +119,7 @@ public class CombatScript : MonoBehaviour
 			{
 				isInCombatStance = false;
 				movementInput.CanDash = true;
-				animator.SetBool("CombatStance", isInCombatStance);
+				animator.SetBool(CombatStanceAnimationParam, isInCombatStance);
 			}
 		}
 	}
@@ -114,6 +131,10 @@ public class CombatScript : MonoBehaviour
 			if (!transform.position.CompareDist(currentTarget.transform.position, NoStaminaCostTeliportDistance))
 			{
 				health.UseStamina(StaminaCostPerTeliport);
+				if (movementInput != null)
+				{
+					movementInput.BlockPlayerMovementFor(TeliportDuration);
+				}
 			}
 
 			MoveTorwardsTarget(target: currentTarget, duration: TeliportDuration);
@@ -164,9 +185,9 @@ public class CombatScript : MonoBehaviour
 		if (isTired != health.IsOnLowStamina)
 		{
 			isTired = health.IsOnLowStamina;
-			animator.SetBool("Tired", isTired);
+			animator.SetBool(TiredAnimationParam, isTired);
 		}
-		animator.SetTrigger("NormalPunch" + currentCombo);
+		animator.SetTrigger(NormalPunchAnimationParam + currentCombo);
 
 		currentCombo++;
 	}
@@ -224,37 +245,37 @@ public class CombatScript : MonoBehaviour
 		audioSource.clip = onAirPunchSFX[Random.Range(0, onAirPunchSFX.Length)];
 		audioSource.Play();
 		if (health.IsOnLowStamina) return;
-		switch (animationEvent.intParameter)
-		{
-			case 0:
-				rightHand.enabled = true;
-				break;
-			case 1:
-				LefHand.enabled = true;
-				break;
-			case 2:
-				Leg.enabled = true;
-				break;
-			default:
-				break;
-		}
+		//switch (animationEvent.intParameter)
+		//{
+		//	case 0:
+		//		rightHand.enabled = true;
+		//		break;
+		//	case 1:
+		//		LefHand.enabled = true;
+		//		break;
+		//	case 2:
+		//		Leg.enabled = true;
+		//		break;
+		//	default:
+		//		break;
+		//}
 	}
 	void DisableTrail(AnimationEvent animationEvent)
 	{
-		switch (animationEvent.intParameter)
-		{
-			case 0:
-				rightHand.enabled = false;
-				break;
-			case 1:
-				LefHand.enabled = false;
-				break;
-			case 2:
-				Leg.enabled = false;
-				break;
-			default:
-				break;
-		}
+		//switch (animationEvent.intParameter)
+		//{
+		//	case 0:
+		//		rightHand.enabled = false;
+		//		break;
+		//	case 1:
+		//		LefHand.enabled = false;
+		//		break;
+		//	case 2:
+		//		Leg.enabled = false;
+		//		break;
+		//	default:
+		//		break;
+		//}
 	}
 	// void LerpCharacterAcceleration()
 	// {

@@ -5,6 +5,7 @@ public class RingOfFire : MonoBehaviour
 {
 	private const int OneSecond = 1;
 	public float radius;
+	public float healthGainOverTime;
 	public float staminaGainOverTime;
 	private PlayerHealthAndStamina player;
 
@@ -23,7 +24,9 @@ public class RingOfFire : MonoBehaviour
 			time += Time.deltaTime;
 			if (time >= OneSecond)
 			{
+				player.GainHeath(healthGainOverTime);
 				player.GainStamina(staminaGainOverTime);
+
 				time = 0;
 			}
 		}

@@ -80,7 +80,7 @@ namespace Utilities
 		{
 			return (self - a).sqrMagnitude <= distance.SQ();
 		}
-		public static bool IsBetween(this Vector3 self, float minDistance, float maxDistance)
+		public static bool IsMagnitudeBetween(this Vector3 self, float minDistance, float maxDistance)
 		{
 			return self.sqrMagnitude > minDistance.SQ() && self.sqrMagnitude <= maxDistance.SQ();
 		}

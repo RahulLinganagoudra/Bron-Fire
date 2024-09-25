@@ -122,9 +122,10 @@ public class PlayerHealthAndStamina : MonoBehaviour
 	{
 		return 0;
 	}
-	public void GainHeath()
+	public void GainHeath(float healthGain)
 	{
-		print("Health gained");
+		Stamina += healthGain;
+		lastTimeHealthGained = Time.time ;
 	}
 	public void GainStamina(float ammount)
 	{
@@ -136,10 +137,12 @@ public class PlayerHealthAndStamina : MonoBehaviour
 			lastTimeBroOnFire = Time.time;
 		}
 	}
-	public void DealDamage()
+	public void DealDamage(DamageInfo info)
 	{
-		print("Dealt damage");
+		Health -= info.damageAmmount;
 	}
+	
+
 	public void UseStamina(int cost)
 	{
 		Stamina -= cost;
@@ -182,4 +185,9 @@ public class PlayerHealthAndStamina : MonoBehaviour
 	{
 		broFireLifetime = newLifetime;
 	}
+}
+public class DamageInfo
+{
+	public GameObject origin;
+	public float damageAmmount;
 }
