@@ -18,7 +18,12 @@ public class CombatScript : MonoBehaviour
 	private const string CombatStanceAnimationParam = "CombatStance";
 	private const string NormalPunchAnimationParam = "NormalPunch";
 	private const string TiredAnimationParam = "Tired";
-	private const string HitAnimatorTrigger = "Hit1";
+	private const string HitAnimatorParam = "Hit1";
+	private const string BlockAnimatorParam = "Block";
+
+
+
+
 	[SerializeField] TrailRenderer rightHand, LefHand, Leg;
 	[SerializeField] ParticleSystem rightHandShock, leftHandShock, legShock;
 	[SerializeField] private int maxCombo = 2;
@@ -55,6 +60,7 @@ public class CombatScript : MonoBehaviour
 	private float teliportLerpTimeDelta;
 	private float lastTimeAOERecharged;
 
+	public bool IsBlocking { get; private set; }
 
 	void Start()
 	{
@@ -91,13 +97,23 @@ public class CombatScript : MonoBehaviour
 			health.UseStamina(ability.StaminaCost);
 			ability.UseAbility(this);
 			aoeCharge = 0;
+			HealthBarUI.instance.UpdateBrosAbility(aoeCharge / ability.MaxCharge);
 		}
 
 		if (isInCombatStance && Input.GetKeyDown(KeyCode.Space))
 		{
 			EnemyAI attackingEnemy = enemyDetection.GetAttackingEnemy(queryRadius: 5);
-			DodgeIncommingAttackFrom(attackingEnemy);
+			//DodgeIncommingAttackFrom(attackingEnemy);
+			IsBlocking = true;
+			animator.SetBool(BlockAnimatorParam, IsBlocking);
 		}
+		if (IsBlocking && Input.GetKeyUp(KeyCode.Space))
+		{
+			IsBlocking = false;
+			animator.SetBool(BlockAnimatorParam, IsBlocking);
+		}
+
+
 		if (Input.GetMouseButtonDown(0) && Time.time - lastTimeFireInputReceived > HalfSecond)
 		{
 			currentTarget = enemyDetection.GetCurrentTarget();
@@ -131,10 +147,7 @@ public class CombatScript : MonoBehaviour
 			if (!transform.position.CompareDist(currentTarget.transform.position, NoStaminaCostTeliportDistance))
 			{
 				health.UseStamina(StaminaCostPerTeliport);
-				if (movementInput != null)
-				{
-					movementInput.BlockPlayerMovementFor(TeliportDuration);
-				}
+
 			}
 
 			MoveTorwardsTarget(target: currentTarget, duration: TeliportDuration);
@@ -154,6 +167,7 @@ public class CombatScript : MonoBehaviour
 		oppositeDirectionFromEnemy.Normalize();
 
 		transform.DOLookAt(enemyAI.transform.position, .2f);
+		movementInput.BlockPlayerMovementFor(1);
 		transform.DOMove(transform.position + oppositeDirectionFromEnemy, 1).SetEase(Ease.InSine);
 		CalculateCombo();
 		lastTimeFireInputReceived = Time.time;
@@ -194,6 +208,10 @@ public class CombatScript : MonoBehaviour
 
 	void MoveTorwardsTarget(EnemyAI target, float duration)
 	{
+		if (movementInput != null)
+		{
+			movementInput.BlockPlayerMovementFor(TeliportDuration);
+		}
 		OnTrajectory.Invoke(target);
 		transform.DOLookAt(target.transform.position, .2f);
 		transform.DOMove(TargetOffset(target.transform), duration);
@@ -236,7 +254,7 @@ public class CombatScript : MonoBehaviour
 		if (currentTarget != null && transform.position.CompareDist(currentTarget.transform.position, AttackDistance))
 		{
 			audioSource.Play();
-			currentTarget.DealDamage(new DamageInfo { origin=gameObject,damageAmmount=1});
+			currentTarget.DealDamage(new DamageInfo { origin = gameObject, damageAmmount = 1 });
 			health.GainStamina(StaminaGainPerHit);
 		}
 	}
@@ -293,7 +311,16 @@ public class CombatScript : MonoBehaviour
 
 	internal void DealDamage(DamageInfo damageInfo)
 	{
-		animator.SetTrigger(HitAnimatorTrigger);
-	health.DealDamage(damageInfo);
+		if (IsBlocking) { return; }
+		animator.SetTrigger(HitAnimatorParam);
+		health.DealDamage(damageInfo);
+	}
+	void BlockStarted()
+	{
+		IsBlocking = true;
+	}
+	void BlockFinished()
+	{
+		IsBlocking = false;
 	}
 }

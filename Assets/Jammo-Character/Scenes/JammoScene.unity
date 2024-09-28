@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.554, g: 2001.8245, b: 2444.6995, a: 1}
+  m_IndirectSpecularColor: {r: 2160.3733, g: 2002.3655, b: 2445.0627, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -335,7 +335,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 46016744}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.016938744, y: -0.5801549, z: 0.012069032, w: 0.8142405}
+  m_LocalRotation: {x: 0.016938753, y: -0.5801549, z: 0.01206904, w: 0.8142405}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2397,21 +2397,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2466,11 +2451,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy (3)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2787,11 +2767,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo_Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4757836856755875626, guid: bd6ee82c5e06b3f4f86113cbf8261ae1,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5213313593121154144, guid: bd6ee82c5e06b3f4f86113cbf8261ae1,
         type: 3}
@@ -3561,21 +3536,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3630,11 +3590,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4570,21 +4525,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4639,11 +4579,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7518,7 +7453,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1551315835}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.012649678, y: -0.58021045, z: -0.009013027, w: 0.8143185}
+  m_LocalRotation: {x: -0.01264968, y: -0.58021045, z: -0.009013028, w: 0.8143185}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10101,21 +10036,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10170,11 +10090,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10245,21 +10160,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10314,11 +10214,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy (6)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11473,21 +11368,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: AttackRadius
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11542,11 +11422,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Jammo Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317735873203045388, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11640,16 +11515,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2144192063}
     m_Modifications:
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1975868288701279087, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
-        type: 3}
-      propertyPath: DisableMovement
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2046695688514251656, guid: 4760a8d80d129ac4abfbeb0acc63e6cf,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -96,10 +96,10 @@ public class EnemyAI : MonoBehaviour
 	void Dead()
 	{
 		EnemyManager.instance?.Unsubscribe(this);
-		characterController.enabled = false;
-		enabled = false;
 		animator.SetTrigger(DeadAnimatorParam);
 		OnDead?.Invoke(this);
+		characterController.enabled = false;
+		enabled = false;
 	}
 	public bool IsAttackable()
 	{
@@ -115,11 +115,14 @@ public class EnemyAI : MonoBehaviour
 		animator.SetTrigger(HitAnimatorParam);
 		if (IsOnLowHealth)
 		{
-			SetCurrentEnemyState(EnemyStates.Retreating);
-		}
-		else if (hitPoints <= 0)
-		{
-			Dead();
+			if (hitPoints <= 0)
+			{
+				Dead();
+			}
+			else
+			{
+				SetCurrentEnemyState(EnemyStates.Retreating);
+			}
 		}
 	}
 	public void SetCurrentEnemyState(EnemyStates enemyState)
@@ -246,6 +249,7 @@ public class EnemyAI : MonoBehaviour
 	}
 	private void OnDrawGizmosSelected()
 	{
+		if (playerTransform == null) return;
 		Vector3 dirToPlayer = playerTransform.position - transform.position;
 		float strafeRadius = 4;
 		var rightPerpendicular = Vector3.Cross(dirToPlayer.normalized, Vector3.up);

@@ -2,18 +2,20 @@
 using DG.Tweening;
 using System.Collections;
 using Utilities;
+using UI;
 
 public class AssassinsFocus : MonoBehaviour
 {
 	private const float StoppingDistance = 1f;
 	private const string AssassinateAnimatorParam = "Assassinate";
+	private const float AnimationRootMotionCounter = 1f;
 	[SerializeField] AssasinsFocusUI assassinsFocusUI;
 	private AutoTargeting enemyDetection;
 	private CombatScript combatScript;
 	private Animator animator;
 	private EnemyAI currentEnemy;
 	private System.Collections.Generic.Queue<EnemyAI> focusedEnemies = new();
-
+	private CharacterController characterController;
 
 	private bool IsUsingFocus { get; set; } = false;
 	private bool IsPerformingFocusAttack { get; set; }
@@ -23,6 +25,7 @@ public class AssassinsFocus : MonoBehaviour
 		enemyDetection = GetComponent<AutoTargeting>();
 		combatScript = GetComponent<CombatScript>();
 		animator = GetComponent<Animator>();
+		characterController = GetComponent<CharacterController>();
 	}
 	private void Update()
 	{
@@ -32,6 +35,7 @@ public class AssassinsFocus : MonoBehaviour
 			IsUsingFocus = !IsUsingFocus;
 			if (IsUsingFocus)
 			{
+				FindAnyObjectByType<EnemyFocusUI>().Focus(null,Vector3.zero);
 				Time.timeScale = 0.07f;
 				combatScript.enabled = false;
 				EnemyManager.instance.stopUpdate = true;
@@ -62,6 +66,7 @@ public class AssassinsFocus : MonoBehaviour
 		if (IsUsingFocus && !IsPerformingFocusAttack && Input.GetKeyDown(KeyCode.F))
 		{
 			IsPerformingFocusAttack = true;
+
 			Time.timeScale = 1;
 			PerformFocusAttack();
 		}
@@ -92,7 +97,7 @@ public class AssassinsFocus : MonoBehaviour
 
 	private void PerformFocusAttack()
 	{
-		GetComponent<CharacterController>().enabled = false;
+		characterController.enabled = false;
 		StartCoroutine(StartFocusAttack());
 	}
 	IEnumerator StartFocusAttack()
@@ -102,8 +107,9 @@ public class AssassinsFocus : MonoBehaviour
 			currentEnemy = focusedEnemies.Dequeue();
 			transform.DOLookAt(currentEnemy.transform.position, 0.1f);
 			Vector3 directionToEnemy = (currentEnemy.transform.position - transform.position);
-			Vector3 negetiveDirection = -directionToEnemy.normalized * StoppingDistance;
+			Vector3 negetiveDirection = -directionToEnemy.normalized * (StoppingDistance + AnimationRootMotionCounter);
 			Vector3 stoppingPoint = transform.position + (directionToEnemy + negetiveDirection).XZ();
+			
 			transform.DOMove(stoppingPoint, 0.2f).onComplete += () =>
 			{
 				currentEnemy.DealDamage(new DamageInfo { origin = gameObject, damageAmmount = int.MaxValue });
@@ -111,7 +117,8 @@ public class AssassinsFocus : MonoBehaviour
 			};
 			yield return new WaitForSeconds(1.4f);
 		}
-		GetComponent<CharacterController>().enabled = true;
+
+		characterController.enabled = true;
 		IsUsingFocus = false;
 		combatScript.enabled = true;
 		assassinsFocusUI.EndFocus();

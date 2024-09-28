@@ -7495,7 +7495,7 @@ MonoBehaviour:
   strafeSpeed: 1.5
   MaxHitPoints: 5
   AttackRadius: 1.5
-  damageAmmount: 10
+  damageAmmount: 5
   InformAttackFX: {fileID: 1459169868779619100}
   hitSFX: {fileID: 8300000, guid: 43cd0c1b3653ab541b56cdeb750c72d4, type: 3}
 --- !u!1 &4410170402653868067

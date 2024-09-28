@@ -68,7 +68,10 @@ public class MovementInput : MonoBehaviour
 			verticalVel -= 1;
 		}
 		moveVector = new Vector3(0, verticalVel * .2f * Time.deltaTime, 0);
-		controller.Move(moveVector);
+		if (controller.enabled)
+		{
+			controller.Move(moveVector);
+		}
 	}
 
 	void PlayerMoveAndRotation()
@@ -93,7 +96,10 @@ public class MovementInput : MonoBehaviour
 		{
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(desiredMoveDirection), desiredRotationSpeed);
 			float Velocity = health.IsOnLowStamina ? TiredVelocity : this.Velocity;
-			controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
+			if(controller.enabled)
+			{
+				controller.Move(desiredMoveDirection * Time.deltaTime * Velocity);
+			}
 		}
 	}
 

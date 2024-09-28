@@ -6,7 +6,7 @@ using Utilities;
 The purpose for separating AssassinsFocusUI is this updates every frame and updating every frame whole canvas is very costly.
 separating only assasins focus can prevent repainting every canvas element for no reason.
 */
-public class AssasinsFocusUI : MonoBehaviour 
+public class AssasinsFocusUI : MonoBehaviour
 {
 	[SerializeField] Image focusPrefab;
 	[SerializeField] Transform focusPointParent;
@@ -15,7 +15,7 @@ public class AssasinsFocusUI : MonoBehaviour
 	Camera cam;
 	private void Start()
 	{
-		cam=Camera.main;
+		cam = Camera.main;
 	}
 
 	public void StartFocus()
@@ -29,15 +29,21 @@ public class AssasinsFocusUI : MonoBehaviour
 	}
 	public void Repaint(EnemyAI[] targets)
 	{
-		if(cam==null)
+		if (cam == null)
 		{
 			cam = Camera.main;
 		}
 		focusPointParent.DestroyChildren();
 		foreach (EnemyAI target in targets)
 		{
-			var focusUI=Instantiate(focusPrefab,focusPointParent);
-			focusUI.transform.position=cam.WorldToScreenPoint(target.transform.position+Vector3.up);
+			Vector3 screenPoint = cam.WorldToScreenPoint(target.transform.position + Vector3.up);
+
+			if (screenPoint.x <= Screen.width && screenPoint.x >= 0 &&
+				screenPoint.y <= Screen.height && screenPoint.y >= 0)
+			{
+				var focusUI = Instantiate(focusPrefab, focusPointParent);
+				focusUI.transform.position = screenPoint;
+			}
 		}
 	}
 

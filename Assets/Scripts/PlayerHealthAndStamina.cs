@@ -109,7 +109,7 @@ public class PlayerHealthAndStamina : MonoBehaviour
 		}
 		else
 		{
-			if (Time.time - lastTimeHealthReduced > 1)
+			if (Time.time - lastTimeStaminaGained > _staminaRetentionTime && Time.time - lastTimeHealthReduced > 1)
 			{
 				Health -= _healthReductionSpeed;
 				lastTimeHealthReduced = Time.time;
@@ -124,8 +124,8 @@ public class PlayerHealthAndStamina : MonoBehaviour
 	}
 	public void GainHeath(float healthGain)
 	{
-		Stamina += healthGain;
-		lastTimeHealthGained = Time.time ;
+		Health += healthGain;
+		lastTimeHealthGained = Time.time;
 	}
 	public void GainStamina(float ammount)
 	{
@@ -141,7 +141,7 @@ public class PlayerHealthAndStamina : MonoBehaviour
 	{
 		Health -= info.damageAmmount;
 	}
-	
+
 
 	public void UseStamina(int cost)
 	{

@@ -7051,6 +7051,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 832f70c58f3d8434b9d10bb258e2450a, type: 3}
   enemyFocusUI: {fileID: 0}
   targetUiOffset: 0.8
+  isTired: 0
+  ability:
+    maxCharge: 5
+    chargeRate: 0.2
+    staminaCost: 5
+    FX: {fileID: 3597866535878858616, guid: 816c3f5396c7e964289801105be6cf9f, type: 3}
   OnTrajectory:
     m_PersistentCalls:
       m_Calls: []
@@ -7060,12 +7066,6 @@ MonoBehaviour:
   OnCounterAttack:
     m_PersistentCalls:
       m_Calls: []
-  isTired: 0
-  ability:
-    maxCharge: 5
-    chargeRate: 2
-    staminaCost: 5
-    FX: {fileID: 3597866535878858616, guid: 816c3f5396c7e964289801105be6cf9f, type: 3}
 --- !u!82 &8874474106144897208
 AudioSource:
   m_ObjectHideFlags: 0

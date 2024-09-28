@@ -50,8 +50,7 @@ public class AutoTargeting : MonoBehaviour
 
 			if (currentTarget == enemy)
 			{
-				currentTarget = null;
-				explicitTarget = null;
+				ChangeTarget(null);
 			}
 		};
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
+using static MyUtils.Utilities;
 /*
  * Enemy manager manages the current available enemies and puts them into the active enemy's pool 
  * Enemies subscribe themself when they become active and unsubscribes themselves when they become inactive or become dead 
@@ -18,7 +19,7 @@ public class EnemyManager : Singleton<EnemyManager>
 	[Header("Enemy Update Loop")]
 	[SerializeField]
 	[Tooltip("While other enemy is getting hit, Chance of sending backup enemy for his help")]
-	private int getBackupPercentage=15;
+	private int getBackupPercentage = 15;
 	[SerializeField]
 	[Min(0.5f)]
 	float updatesPerSecond = 5;
@@ -31,7 +32,7 @@ public class EnemyManager : Singleton<EnemyManager>
 	private void Start()
 	{
 		DOTween.Init();
-		print($"Deltatime = {deltaTime}");
+
 	}
 	private void Update()
 	{
@@ -67,20 +68,24 @@ public class EnemyManager : Singleton<EnemyManager>
 				continue;
 			}
 
-			EnemyStates enemyState = Random.Range(0, 2) == 1 ? EnemyStates.Idle : EnemyStates.Strafing;
+			EnemyStates enemyState = GetRandomTF() ? EnemyStates.Idle : EnemyStates.Strafing;
 			enemy.SetCurrentEnemyState(enemyState);
 		}
-		if (!foundAttackingEnemy || MyUtils.Utilities.GetChance(getBackupPercentage))
+		if (!foundAttackingEnemy || GetChance(getBackupPercentage))
 		{
-			while (true)
-			{
-				EnemyAI enemyAI = activeEnemies[Random.Range(0, activeEnemies.Count)];
-				if (!enemyAI.IsAttacking && !enemyAI.IsOnLowHealth)
-				{
-					enemyAI.SetCurrentEnemyState(EnemyStates.Attacking);
-					break;
-				}
-			}
+			////if the enemy count is less than equal to 1 it will stuck in infinite loop
+			EnemyAI enemyAI = activeEnemies[Random.Range(0, activeEnemies.Count)];
+			//while (activeEnemies.Count > 2)
+			//{
+			//	enemyAI = activeEnemies[Random.Range(0, activeEnemies.Count)];
+
+			//	if (!enemyAI.IsAttacking && !enemyAI.IsOnLowHealth)
+			//	{
+			//		enemyAI.SetCurrentEnemyState(EnemyStates.Attacking);
+			//		return;
+			//	}
+			//}
+			enemyAI.SetCurrentEnemyState(EnemyStates.Attacking);
 		}
 	}
 	public void ForceUpdateEnemies()
